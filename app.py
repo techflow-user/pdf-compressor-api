@@ -9,6 +9,10 @@ GS = "gs"
 
 @app.route("/compress", methods=["POST"])
 def compress_pdf():
+
+    if "file" not in request.files:
+        return jsonify({"error": "No file provided"}), 400
+
     file = request.files["file"]
     quality = request.form.get("quality", "ebook")
 
@@ -30,7 +34,6 @@ def compress_pdf():
             input_path
         ])
 
-        # ✅ cleanup corretto DOPO invio
         @after_this_request
         def cleanup(response):
             try:
